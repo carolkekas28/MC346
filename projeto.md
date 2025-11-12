@@ -104,6 +104,7 @@ Usada para criar uma função de modificação nomeada. Essa função aceita uma
 | `add-step-to-start` | `(add-step-to-start (step ...))` | Adiciona o novo passo no início da lista de passos. |
 | `add-step-to-end` | `(add-step-to-end (step ...))` | Adiciona o novo passo no fim da lista de passos. |
 | `add-step-after` | `(add-step-after ÍNDICE (step ...))` | Adiciona o novo passo após o passo na posição `ÍNDICE` (indexação começando em 1). |
+| `add-step-after-text` | `(add-step-after-text "TERMO DE BUSCA" (step ...))` | adiciona um novo passo depois de um texto na receita (definido posteriormente). |
 
 
 #### Macro 3 - `create-recipe`
@@ -199,42 +200,48 @@ Usada para compor receitas por inclusão direta dos passos/ingredientes de uma r
 > - O novo passo usa a sintaxe estrutura de `ingredient`.
 > - A sumarização aparece na lista de ingredientes (açúcar = 2,0 xícaras). 
 
-### 3. Compondo modificações (cobertura de chocolate)
-Suponha uma modificação `com-calda-de-chocolate` definida via `define-modification` que adiciona passos/ingredientes da calda.
+### 3. Compondo modificações
+Suponha as seguintes modificações: `de-chocolate`, `desperdicar` e `com-fermento`. 
 ```
-;; Receita reutilizável de cobertura
-(define-recipe calda-de-chocolate
-  (step "Para a calda, misturar" (ingredient 1 can "leite condensado")
-                                "e" (ingredient 3 tablespoon "chocolate em pó")
-                                "em fogo baixo até engrossar"))
+(display "--- Testando add-step-after-text ---\n")
 
-;; Modificação que injeta a cobertura ao final
-(define-modification com-calda-de-chocolate
-  (add-step-to-end calda-de-chocolate))
+(define-modification de-chocolate
+  (add-step-after-text "farinha de trigo" ; <-- Nova ação
+    (step "Adicionar" (ingredient 1 cup "chocolate em pó") "e misturar")))
 
-(display "--- Receita 1: Bolo de Cenoura com Calda ---\n")
-(create-recipe "Bolo de Cenoura com Calda de Chocolate"
-  (com-calda-de-chocolate (de-cenoura bolo)))
+(define-modification desperdicar
+    (add-step-after-text "Assar em forno"
+        (step "Jogar tudo no lixo")))
+
+(define-modification com-fermento
+  (add-step-after-text "farinha de trigo"
+    (step "Por último, adicionar" (ingredient 1 tablespoon "fermento em pó") "e misturar levemente")))
+
+(create-recipe "Bolo de Chocolate desperdiçado"
+  (com-fermento(desperdicar (de-chocolate bolo))))
 ```
 #### Saída (trecho):
 ```
---- Receita 1: Bolo de Cenoura com Calda ---
-## Bolo de Cenoura com Calda de Chocolate
+--- Testando add-step-after-text ---
+## Bolo de Chocolate desperdiçado
 
 ### Ingredientes
+
 * 2 xícara(s) de farinha de trigo
 * 0.5 xícara(s) de óleo
-* 2.0 xícara(s) de açúcar
+* 1.5 xícara(s) de açúcar
 * 3 unidade(s) de ovos
-* 3 unidade(s) de cenouras médias raladas
-* 3 colher(es) de sopa de chocolate em pó
-* 1 lata(s) de leite condensado
-...
+* 1 xícara(s) de chocolate em pó
+* 1 colher(es) de sopa de fermento em pó
 
-### Modo de Preparo (trecho)
-...
-5. Para a calda, misturar 1 lata(s) de leite condensado e 3 colher(es) de sopa de chocolate em pó em fogo baixo até engrossar
+### Modo de Preparo
 
+1. Misturar 3 unidade(s) de ovos , 1.5 xícara(s) de açúcar e 0.5 xícara(s) de óleo
+2. Adicionar 2 xícara(s) de farinha de trigo e misturar bem
+3. Por último, adicionar 1 colher(es) de sopa de fermento em pó e misturar levemente
+4. Adicionar 1 xícara(s) de chocolate em pó e misturar
+5. Assar em forno pré-aquecido a 180°C por 40 minuto(s)
+6. Jogar tudo no lixo
 ```
 > O que foi alterado:
 > - A cobertura agora é uma receita reutilizável (`define-recipe`) e é adicionada com uma modificação.
@@ -279,9 +286,7 @@ Os resultados desta entrega parcial apontam que a modelagem de receitas como est
 
 Por que esse modelo funcionou bem aqui? Primeiro, porque o domínio de receitas favorece uma apresentação declarativa: passos são naturalmente sequenciais e ingredientes são referências textuais curtas. Ao expor ambos na sintaxe,e simplificamos o que, em uma linguagem de propósito geral, exigiria listas, loops e joins. Segundo, a decisão por imutabilidade evita efeitos colaterais difíceis de depurar, como perder um passo ao inserir outro, e torna o comportamento das modificações transparente: dado o mesmo insumo, o resultado é sempre o mesmo. Terceiro, a camada de renderização ufinica apresentação e extração, pois `get-steps` e `get-ingredients` geram material pronto para Markdown sem que o autor precise manter duas verdades (texto e lista). 
 
-A introdução de `use-recipe` elevou o poder composicional do OvenFlow, permitindo reaproveitar massas, caldas e recheios como blocos declarativos. A validação de unidades reduziu erros de domínio, como misturar grandes incompatíveis, enquanto a sumarização de ingredientes alinhou apresentação e preparo, evitando redundâncias na lista final. A marcação explicita de tempo e temperatura aumentou a fidelidade semântica sem poluir a lista de ingredientes.
-
-Os nossos experimentos, contudo, expõem alguns limites bem claros. Não temos validação de unidades e medidas (por exemplo, xícara, grama e mililitros) nem checagens de consistências. Embora o custo de inserções lineares seja irrelevante para receitas comuns, coleções maiores, como livros, pedem estruturas mais persistentes.
+A introdução de `use-recipe` elevou o poder composicional do OvenFlow, permitindo reaproveitar massas, caldas e recheios como blocos declarativos. A validação de unidades reduziu erros de domínio, como misturar grandes incompatíveis, enquanto a sumarização de ingredientes alinhou apresentação e preparo, evitando redundâncias na lista final. A marcação explicita de tempo e temperatura aumentou a fidelidade semântica sem poluir a lista de ingredientes. A modificação 
 
 ## Conclusão
 
