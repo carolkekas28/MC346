@@ -13,7 +13,7 @@ após o n-ésimo, renderizar "modo de preparo" automaticamente e listar ingredie
 
 ## Slides
 
-[Link para acessar os nossos slides.](https://docs.google.com/presentation/d/1QNMO3aChWYS85rvfX5D0YxKlk1Zj9BUbQlnRaAwpRmQ/edit?usp=sharing)
+[Link para acessar os nossos slides.](https://www.canva.com/design/DAG3gZIbsiM/ItCkigNDue6Kk7S5WM8ljA/edit?utm_content=DAG3gZIbsiM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 ## Notebook
 
