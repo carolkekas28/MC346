@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>MC346 Blockly DSL - Gerador de Receitas</title>
+  <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+  <style>
+    /* Estilo para garantir uma boa visualização */
+    body { font-family: 'Inter', sans-serif; display:flex; height:100vh; margin:0; background-color: #f0f4f8; }
+    #blocklyDiv { height: 100vh; width: 65%; border-right: 2px solid #ccc; } 
+    #right { padding: 20px; width: 35%; box-sizing:border-box; background-color: #ffffff; }
+    h4 { margin-top: 5px; margin-bottom: 10px; color: #333; border-bottom: 2px solid #6495ED; padding-bottom: 5px; }
+    #result { 
+        background:#e6e9ed; 
+        padding:15px; 
+        height:85vh; 
+        overflow:auto; 
+        white-space: pre-wrap; 
+        border-radius: 8px;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        font-family: monospace;
+        color: #1a1a1a;
+        line-height: 1.4;
+    }
+    button{ 
+        margin-top: 0; 
+        padding: 10px 20px; 
+        font-size: 16px; 
+        cursor: pointer;
+        background-color: #6495ED;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        transition: background-color 0.2s;
+        width: 100%;
+    }
+    button:hover {
+        background-color: #4682B4;
+    }
+  </style>
+</head>
+<body>
+  <div id="blocklyDiv"></div>
+  <div id="right">
+    <button id="run">Consultar e Gerar Receita Final</button>
+    <h4>Passo a Passo Formatado</h4>
+    <pre id="result">
+        Bem-vindo ao Gerador de Receitas!
+        
+        Instruções de Composição:
+        1. Arraste o bloco 'Gerar Receita' para a área de trabalho.
+        2. Encaixe a cadeia de 'Composição'.
+        3. A última peça encaixada DEVE ser a RECEITA BASE (ex: Bolo Simples).
+        4. Clique no botão acima para ver o passo a passo completo.
+    </pre>
+  </div>
+
+  <xml id="toolbox" style="display: none">
+    <category name="Consultar Receita" colour="290">
+        <block type="create_final_recipe"></block>
+        <block type="recipe_modification"></block>
+    </category>
+  </xml>
+
+  <script src="blocks.js"></script>
+  <script src="generators_scheme.js"></script>
+  <script>
+    const workspace = Blockly.inject('blocklyDiv', {
+      toolbox: document.getElementById('toolbox'),
+      grid: { spacing: 25, length: 3, colour: '#ccc' }
+    });
+
+    document.getElementById('run').onclick = async () => {
+      // 1. Geração do Scheme (Blockly para String)
+      const code = Blockly.Scheme.workspaceToCode(workspace);
+      
+      // Checa se o bloco principal foi encaixado
+      if (!code.includes('(create-recipe')) {
+        document.getElementById('result').textContent = 'ERRO: Por favor, arraste o bloco principal "Gerar Receita" para a área de trabalho.';
+        return;
+      }
+      
+      // 2. Envio e Execução no Servidor
+      document.getElementById('result').textContent = 'Processando...';
+      
+      const res = await fetch('/run-scheme', { 
+        method:'POST', 
+        headers: {'Content-Type':'application/json'}, 
+        body: JSON.stringify({ code }) 
+      });
+      
+      const json = await res.json();
+      
+      // 3. Exibição do Resultado
+      if(json.success) {
+        document.getElementById('result').textContent = json.output;
+      } else {
+        document.getElementById('result').textContent = 'ERRO NA EXECUÇÃO (Guile):\n\n' + (json.error || JSON.stringify(json));
+      }
+    };
+  </script>
+</body>
+</html>
