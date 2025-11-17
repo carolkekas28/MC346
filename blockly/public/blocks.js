@@ -15,6 +15,9 @@ Blockly.defineBlocksWithJsonArray([
           ["--- RECEITAS BASE ---", ""],                // Separador visual
           ["Bolo Simples", "bolo-simples"],            // define-recipe bolo-simples
           ["Massa de Torta", "massa-de-torta"],        // define-recipe massa-de-torta
+          ["Recheio Creme", "recheio-creme"],          // define-recipe recheio-creme
+          ["Cobertura de Chocolate", "cobertura-chocolate"], // define-recipe cobertura-chocolate
+          ["Calda de Limão", "calda-limao"],           // define-recipe calda-limao
 
           ["--- MODIFICAÇÕES ---", ""],                // Separador visual
           ["Adicionar Cenoura", "adicao-cenoura"],     // define-modification adicao-cenoura
