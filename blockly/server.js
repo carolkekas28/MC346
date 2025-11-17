@@ -16,6 +16,7 @@ const SCHEME_TEMPLATES_DIR = path.join(__dirname, 'scheme_templates');
 
 app.post('/run-scheme', (req, res) => {
   const { code } = req.body;
+  console.log("===== Scheme gerado =====\n" + code + "\n=========================");
   if (typeof code !== 'string') return res.status(400).json({ success: false, error: 'Código não fornecido.' });
 
   const id = uuidv4();
@@ -23,15 +24,11 @@ app.post('/run-scheme', (req, res) => {
   fs.mkdirSync(tmpDir, { recursive: true });
   const filename = path.join(tmpDir, `code-${id}.scm`);
   
-  // 1. Envolver o código do usuário com o comando para carregar a infraestrutura
-  // O código do usuário (gerado pelo Blockly) já contém (load "base_recipes.scm")
-  // Precisamos garantir que a macro 'create-recipe' (de render_recipe.scm) exista.
-  const wrapperCode = `
-(load (string-append "${SCHEME_TEMPLATES_DIR}/render_recipe.scm"))
-${code}
-  `;
-
+    // O código gerado pelo Blockly já contém os (load "render_recipe.scm")
+  // e (load "base_recipes.scm"). Vamos gravar exatamente o que veio.
+  const wrapperCode = code;
   fs.writeFileSync(filename, wrapperCode, 'utf8');
+
 
   // 2. Executar o Guile
   // Importante: Definimos o CWD (Current Working Directory) para o diretório de templates.
