@@ -254,6 +254,49 @@ Suponha as seguintes modificações: `de-chocolate`, `desperdicar` e `com-fermen
 3. Finalizar com mais 2 unidade(s) de ovos batidos
 ```
 
+
+### 5. Gerando receitas de receitas
+Neste exemplo, criamos uma receita base (bolo), uma segunda receita (calda-de-chocolate) e uma modificação que adiciona a calda ao final da receita principal, o demonstra que a DSL permite composição declarativa entre receitas, resultando em uma receita de receitas.
+```
+(define-recipe calda-de-chocolate
+    (step "Para a calda, misturar"
+          (ingredient 1 can "leite condensado")
+          "e"
+          (ingredient 3 tablespoon "chocolate em pó")
+          "em fogo baixo até engrossar"))
+
+(define-modification com-calda-de-chocolate
+  (add-step-to-end calda-de-chocolate))
+
+(display "--- Receita 1: Bolo de Cenoura com Calda ---\n")
+(create-recipe "Bolo de Cenoura com Calda de Chocolate"
+  (com-calda-de-chocolate (de-cenoura bolo)))
+```
+
+#### Saída (formato Markdown)
+```
+## Bolo de Cenoura com Calda de Chocolate
+
+### Ingredientes
+
+* 2 xícara(s) de farinha de trigo
+* 0.5 xícara(s) de óleo
+* 2.0 xícara(s) de açúcar
+* 3 unidade(s) de ovos
+* 3 unidade(s) de cenouras médias raladas
+* 3 colher(es) de sopa de chocolate em pó
+* 1 lata(s) de leite condensado
+
+### Modo de Preparo
+
+1. Misturar 3 unidade(s) de ovos , 1.5 xícara(s) de açúcar e 0.5 xícara(s) de óleo  
+2. Adicionar 3 unidade(s) de cenouras médias raladas e 0.5 xícara(s) de açúcar à mistura e bater novamente  
+3. Adicionar 2 xícara(s) de farinha de trigo e misturar bem  
+4. Assar em forno pré-aquecido a 180°C por 40 minuto(s)  
+5. Para a calda, misturar 1 lata(s) de leite condensado e 3 colher(es) de sopa de chocolate em pó em fogo baixo até engrossar
+```
+
+
 ## Discussão
 Os resultados desta entrega parcial apontam que a modelagem de receitas como estruturas de dados (com `step` e `ingredient` como elementos de primeira classe) cumpre o objetivo central de reduzir complexidade acidental e tornar a edição de receitas uma tarefa previsível. No notebook, partimos de uma receita base (`bolo`) e demonstramos duas operações típicas de domínio: a inserção de passos por posição (`add-step-after`) e ao final (`add-step-to-end`) e a composição de modificações para gerar variantes, como "Bolo de cenoura com calda de chocolate" e "Torta de Cenoura". Em todos os casos, a receita original permaneceu intacta, e a versão modificada foi produzida por transformação imutável, exatamente a hipótese de composição determinística que queríamos validar. Além disso, a marcação explícita de ingredientes dentro dos passos permitiu extrair automaticamente a lista consolidada via `get-ingredients` e numerar o "modo de preparo" sem duplicação, atendendo à hipótese de apresentação automatizada.
 
