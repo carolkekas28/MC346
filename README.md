@@ -2,7 +2,7 @@
 
 Projeto para a disciplina de Paradigmas de Programação (MC346) — 2s2025.
 
-## 👥 Equipe
+## Equipe
 
 | Nome                        | Ra    |
 |-----------------------------|-------|
@@ -13,7 +13,7 @@ Projeto para a disciplina de Paradigmas de Programação (MC346) — 2s2025.
 
 
 
-## 🚀 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 O projeto implementa uma Linguagem de Domínio Específico (DSL) visual com as seguintes tecnologias:
 
@@ -21,7 +21,7 @@ O projeto implementa uma Linguagem de Domínio Específico (DSL) visual com as s
 
 - Scheme/Guile (Backend): Linguagem funcional onde toda a lógica de manipulação e formatação das receitas é implementada.
 
-## 📚 Estrutura do Repositório
+## Estrutura do Repositório
 
 O projeto segue a arquitetura de uma aplicação web (frontend + backend) que gerencia uma DSL visual.
 
@@ -46,7 +46,7 @@ O projeto segue a arquitetura de uma aplicação web (frontend + backend) que ge
 | └── README.md                  | Markdown    | Documento explicando a estrutura da do repositório/aplicação toda |
 
 
-## 🛠️ Detalhamento do Fluxo
+## Detalhamento do Fluxo
 
 Blocos (Frontend) → Scheme → Resultado (Frontend)
 
@@ -56,7 +56,7 @@ O servidor recebe o código Scheme gerado pelo Blockly, acrescenta a instrução
 Isso garante que todos os arquivos carregados via (load "...") — como render_recipe.scm e base_recipes.scm — sejam encontrados corretamente, já que o Guile passa a procurar esses arquivos dentro desse diretório.
 
 
-## ▶️ Como Executar o Projeto
+## Como Executar o Projeto
 1. Instalação das dependências (Node.js)
 ```text
 cd mc346/blockly
