@@ -309,15 +309,17 @@ Com o desenvolvimento do OvenFlow, pudemos confirmar que tratar receitas como es
 
 Nem tudo, porém, está resolvido. A ausência de validações de domínio (unidades, conversões e checagens de consistência) e de mensagens de erro mais orientativas ainda limita a robustez para usos mais amplos.
 
-Podemos, enfim, concluir que separar modelo (dados) de apresentação (render) simplifica extensões e testes, enquanto a escolha por imutabilidade ajuda a manter a semântica da linguagem estável.
+Em síntese, os experimentos realizados demonstram que o OvenFlow alcança o nosso objetivo principal de representar receitas como estruturas de dados, viabilizando composições, reutilização e geração automática de textos formatos. A validação das três hipóteses centrais (imutabilidade, sumarização correta dos ingredientes e aplicação funcional das modificações) confirma que a DSL está coerente com o modelo proposto e atende com precisão ao domínio escolhido. A capacidade de compor receitas a partir de outras receitas mostra que o design atual é expressivo para capturar variações reais do domínio culinário, preservando clareza e previsibilidade no fluxo de transformação.
 
 # Trabalhos Futuros
 
-Os três eixos abaixo permitem fechar as principais lacunas identificadas no nosso projeto, pavimentando o caminho para avaliações quantitativas na entrega final. 
+Embora a DSL esteja estável e expressiva para o escopo atual, há oportunidades claras de evolução arquitetural. Um primeiro ponto é o system design: hoje, parsing, expansão de macros, composição de receitas e renderização ainda se encontram parcialmente acoplados no notebook. Uma reorganização em camadas — por exemplo: (parse → expand → process → merge → render) — facilitaria extensões futuras e permitiria maior previsibilidade no fluxo interno.
 
-- **Sumarizar ingredientes**: quando diferentes passos utilizam a mesma matéria prima (por exemplo, 2 ovos no preparo de massa e 3 ovos na cobertura), a lista final deverá mostrar 5 ovos. 
-- **Permitir modificar outros parâmetros**: adicionar novos parâmetros do domínio para serem modificados, como tempo de forno, temperatura, etc.
-- **Adicionar validação de unidades de medidas**: assegurar a coerência entre grandezas, proibindo, por exemplo, somar colheres a mililitros sem algum fator de conversão. 
+Além disso, algumas possíveis melhorias incluem:
+
+- Validação mais robusta do domínio, incluindo detecção de ciclos entre receitas importadas, checagem mais rígida de tipos, e mensagens de erro mais informativas.
+- Suporte a novas operações de transformação, como substituir passos, remover passos, escalar ingredientes (dobrar a receita), ou combinar receitas em paralelo (ex.: “preparo da massa” + “preparo da cobertura”).
+- Modularização das operações principais, isolando responsabilidades e permitindo testes unitários independentes.
 
 # Referências Bibliográficas
 
