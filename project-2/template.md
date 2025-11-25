@@ -313,7 +313,7 @@ Em síntese, os experimentos realizados demonstram que o OvenFlow alcança o nos
 
 # Trabalhos Futuros
 
-Embora a DSL esteja estável e expressiva para o escopo atual, há oportunidades claras de evolução arquitetural. Um primeiro ponto é o system design: hoje, parsing, expansão de macros, composição de receitas e renderização ainda se encontram parcialmente acoplados no notebook. Uma reorganização em camadas — por exemplo: (parse → expand → process → merge → render) — facilitaria extensões futuras e permitiria maior previsibilidade no fluxo interno.
+Embora a DSL esteja estável e expressiva para o escopo atual, há oportunidades claras de evolução arquitetural. Um primeiro ponto é o system design: hoje, parsing, expansão de macros, composição de receitas e renderização ainda se encontram parcialmente acoplados no notebook. Uma reorganização em camadas (por exemplo, parse → expand → process → merge → render) facilitaria extensões futuras e permitiria maior previsibilidade no fluxo interno.
 
 Além disso, algumas possíveis melhorias incluem:
 
