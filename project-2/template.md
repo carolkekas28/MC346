@@ -17,7 +17,7 @@ após o n-ésimo, renderizar "modo de preparo" automaticamente e listar ingredie
 
 ## Notebook
 
-[Link para acessar o nosso Notebook.](https://github.com/carolkekas28/mc346/blob/main/ovenflow.ipynb)
+[Link para acessar o nosso Notebook.](https://github.com/carolkekas28/MC346/blob/main/project-2/ovenflow.ipynb)
 
 ## Sintaxe da Linguagem
 
