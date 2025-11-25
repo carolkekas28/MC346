@@ -37,12 +37,12 @@ O projeto segue a arquitetura de uma aplicação web (frontend + backend) que ge
 | │   ├── scheme_templates/      | Diretório   | Infraestrutura Scheme                     |
 | │   │   ├── base_recipes.scm   | Scheme      | Banco de receitas base                    |
 | │   │   ├── render_recipe.scm  | Scheme      | Macros e lógica da DSL                    |
-| │   ├── server.js              | JS          | Servidor backend (Node + Guile). Recebe o código, adiciona (load "render_recipe.scm"), salva em /tmp e executa Guile com CWD em scheme_templates/.        |
+| │   ├── server.js              | JS          | Servidor backend (Node + Guile). Recebe o código, adiciona (load "render_recipe.scm"), salva em /tmp e executa Guile com CWD em scheme_templates/        |
 | │   ├── tmp/                   | Diretório   | Arquivos .scm temporários                 |
 | │   ├── package.json           | JSON        | Dependências do Node.js                   |
 | │   └── package-lock.json      | JSON        | Versões exatas das dependências           |
-| ├── ovenflow.ipynb             | Jupyter     | Documentação e protótipo                  |
-| ├── projeto.md                 | Markdown    | Documentação explicando a estrutura do back => Guile |
+| ├── project-1             | Diretório     | Documentação e notebook da entrega parcial                 |
+| ├── project-2               | Diretório    | Documentação e notebook da entrega final |
 | └── README.md                  | Markdown    | Documento explicando a estrutura da do repositório/aplicação toda |
 
 
